@@ -304,6 +304,9 @@ class StreamSocket(SimpleSocket):
     def settimeout(self, time):
         self.ins.settimeout(time)
 
+    def gettimeout(self):
+        return self.ins.gettimeout()
+
     def recv(self, x=MTU):
         try:
             pkt = self.ins.recv(x, socket.MSG_PEEK)
