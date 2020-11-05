@@ -301,8 +301,16 @@ class StreamSocket(SimpleSocket):
         SimpleSocket.__init__(self, sock)
         self.basecls = basecls
 
-    def recv(self, x=MTU):
-        pkt = self.ins.recv(x, socket.MSG_PEEK)
+    def settimeout(self, time):
+        self.ins.settimeout(time)
+
+    def recv(self, x=MTU, timeout=None):
+        if timeout is not None:
+            self.settimeout(timeout)
+        try:
+            pkt = self.ins.recv(x, socket.MSG_PEEK)
+        except socket.timeout:
+            return None
         x = len(pkt)
         if x == 0:
             return None
